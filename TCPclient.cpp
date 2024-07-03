@@ -6,24 +6,6 @@
 #include "Chat.h"
 #include "Functions.h"
 
-/*
-void sendCommand(int sock, int command){
-    send(sock, command, command, 0);
-}
-*/
-//Список команд:
-//Registration = 1
-//Sign_in = 2
-//Send = 3
-//Read = 4
-//LogOut = 5
-/*
-void receiveResponse(int sock){
-    char buf[1024] = {0};
-    recv(sock, buf, 1024, 0);
-    std::cout << buf << std::endl;
-}
-*/
 
 char buf[1024];
 
