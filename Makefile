@@ -5,13 +5,13 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++11
 
 # Исходные файлы
-SRCS = User.cpp Message.cpp Chat.cpp TCPclient.cpp TCPserver.cpp
+SRCS = User.cpp Message.cpp Chat.cpp TCPclient.cpp TCPServer.cpp
 
 # Объектные файлы
 OBJS = $(SRCS:.cpp=.o)
 
 # Исполняемые файлы
-TARGETS = TCPclient TCPserver
+TARGETS = TCPclient TCPServer
 
 # Правило по умолчанию
 all: $(TARGETS)
@@ -21,7 +21,7 @@ TCPclient: User.o Message.o Chat.o TCPclient.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Создание исполняемого файла TCPserver
-TCPserver: User.o Message.o Chat.o TCPserver.o
+TCPServer: User.o Message.o Chat.o TCPServer.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # Правило для компиляции исходных файлов

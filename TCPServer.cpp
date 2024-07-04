@@ -16,6 +16,7 @@ void commandsClient(int client_socket){
         int bytes_read = read(client_socket, buffer, 1024);
         if(bytes_read <= 0)
             break;
+        std::cout << "file were get in func commandClient" << std::endl;
         std::string command(buffer);
         std::string response;
 
@@ -58,6 +59,9 @@ void commandsClient(int client_socket){
             }
             response += "END OF MESSAGES\n";
         }
+        else{
+            response = "Command not found!\n";
+        }
 
         write(client_socket, response.c_str(), response.size());
     }
@@ -81,12 +85,13 @@ int main() {
     }
     addr.sin_family = AF_INET;
     addr.sin_port = htons(8000);
-    addr.sin_addr.s_addr = INADDR_LOOPBACK;
+    addr.sin_addr.s_addr = INADDR_ANY;
     if(bind(listener, (struct sockaddr *)& addr, sizeof(addr)) < 0){
         cout << "error bind" << endl;
         exit(2);
     }
     listen(listener, 4);
+    cout << "Listening..." << endl;
 
     while(1){
 
@@ -95,25 +100,30 @@ int main() {
             cout << "accept error" << endl;
             exit(3);
         }
-
+        cout << "accept..." << endl;
+        /*
         switch(fork()){
             case -1:
                 cout << "fork error" << endl;
                 break;
             case 0:
+                cout << "fork..." << endl;
                 close(listener);
                 while(1){
                     bytes_read = read(sock, buf, 1024);
                     if(bytes_read <= 0)
                         break;
-                    std::thread(commandsClient, sock).detach();
+                    cout << "files were get" << endl; 
+                    commandsClient(sock);
+                    cout << "response...";
                 }
 
                 close(sock);
                 _exit(0);
             default:
                 close(sock);
-        }
+        }*/
+        std::thread(commandsClient, sock).detach();
     }
 
     close(listener);

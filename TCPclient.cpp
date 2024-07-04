@@ -3,6 +3,7 @@
 #include <netinet/in.h>
 #include <iostream>
 #include <unistd.h>
+#include <arpa/inet.h>
 #include "Chat.h"
 
 
@@ -37,13 +38,14 @@ int main(){
 
     addr.sin_family = AF_INET;
     addr.sin_port = htons(8000);
-    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     if(connect(sock, (struct sockaddr *)&addr, sizeof(addr)) < 0){
         cout << "error connect" << endl;
         exit(2);
     }
 
+    cout << "connection..." << endl;
     string login, password, receiver, content, action, data;
 
     cout << "1. Registration\n"
@@ -51,7 +53,7 @@ int main(){
 
     int choice = 0;
     cin >> choice;
-    cin.ignore();
+
 
     if(choice == 1){
         action = "REGISTR";
@@ -86,6 +88,8 @@ int main(){
             action = "SEND";
             cout << "Enter receiver username: ";
             cin >> login;
+            cin.clear();
+            cin.ignore();
             cout << "Enter message:" << endl;
             getline(cin, content);
             data = action + " " + login + " " + receiver + " " + content + "\n";
