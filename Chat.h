@@ -8,12 +8,9 @@ class Chat {
 private:
             std::map<std::string, User> users;
             std::vector<Message> messages;
-            std::string logInUser;
 public:
             bool registration(const std::string& login, const std::string& password);
             bool sign_in(const std::string& login, const std::string& password);
-            void sign_out();
-
-            bool sendMessage(const std::string& receiver, const std::string& content);
-            std::vector<Message> readMessages() const;
+            void sendMessage(const std::string& sender, const std::string& receiver, const std::string& text);
+            std::vector<Message> getMessages(const std::string& username);
 };

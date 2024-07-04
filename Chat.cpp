@@ -28,23 +28,18 @@ void Chat::sign_out()
     logInUser = "";
 }
 
-bool Chat::sendMessage(const std::string &receiver, const std::string &content)
-{
-    if(logInUser.empty() || users.find(receiver) == users.end) {
-        std::cout << "User not found" << std::endl;
-        return false;
+void Chat::sendMessage(const std::string& sender, const std::string& receiver, const std::string& text) {
+    if (users.find(receiver) != users.end()) {
+        messages.push_back(Message(sender, receiver, text));
     }
-    messages.emplace_back(logInUser, receiver, content);
-    return true;
 }
 
-std::vector<Message> Chat::readMessages() const
-{
-   std::vector<Message> userMessages;
-   for(const auto& message : messages) {
-        if(message.getReceiver() == logInUser) {
+std::vector<Message> Chat::getMessages(const std::string& username) {
+    std::vector<Message> userMessages;
+    for (const auto& message : messages) {
+        if (message.getReceiver() == username) {
             userMessages.push_back(message);
         }
-   }
-   return userMessages;
+    }
+    return userMessages;
 }

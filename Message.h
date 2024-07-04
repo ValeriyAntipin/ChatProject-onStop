@@ -8,6 +8,7 @@ private:
         std::string receiver;
         std::string content;
 public:
+        Message(const std::string& sender, const std::string& receiver, const std::string& content);
         std::string getSender() const;
         std::string getReceiver() const;
         std::string getContent() const;

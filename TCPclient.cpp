@@ -4,7 +4,18 @@
 #include <iostream>
 #include <unistd.h>
 #include "Chat.h"
-#include "Functions.h"
+
+
+void sendCommand(int sock, std::string& command){
+    write(sock, command.c_str(), command.size());
+}
+
+
+void receiveResponse(int sock){
+    char buf[1024] = {0};
+    read(sock, buf, 1024);
+    std::cout << buf << std::endl;
+}
 
 
 char buf[1024];
@@ -33,30 +44,67 @@ int main(){
         exit(2);
     }
 
-    showMenu();
-    string login, password, receiver, content, action;
+    string login, password, receiver, content, action, data;
+
+    cout << "1. Registration\n"
+         << "2. Sign in\n";
 
     int choice = 0;
     cin >> choice;
     cin.ignore();
 
-    while(choice != 6){
-        
-        switch(choice){
-            
-            case 1:
-                action = "REGISTR";
-                write(sock, action, size(action));
-                cout << "Enter your username: ";
-                cin >> login;
-                cout << "Enter your password: ";
-                cin >> password;
-                write(sock, login, size(login));
-                write(sock, password, size(password));
+    if(choice == 1){
+        action = "REGISTR";
+        cout << "Enter your username: ";
+        cin >> login;
+        cout << "Enter your password: ";
+        cin >> password;
+        data = action + " " + login + " " + password + "\n";
+        sendCommand(sock, data);
+        receiveResponse(sock);
+    }
+    if(choice == 2){
+        action = "LOGIN";
+        cout << "Enter your username: ";
+        cin >> login;
+        cout << "Enter your password: ";
+        cin >> password;
+        data = action + " " + login + " " + password + "\n";
+        sendCommand(sock, data);
+        receiveResponse(sock);
+    }
+    
+    while(true){
+        cout << "1. Send a message" << endl;
+        cout << "2. Get messages" << endl;
+        cout << "3. Exit" << endl;
 
+        cin >> choice;
+        cin.ignore();
+
+        if(choice == 1){
+            action = "SEND";
+            cout << "Enter receiver username: ";
+            cin >> login;
+            cout << "Enter message:" << endl;
+            getline(cin, content);
+            data = action + " " + login + " " + receiver + " " + content + "\n";
+            sendCommand(sock, data);
+            receiveResponse(sock);
+        }
+
+        else if(choice == 2){
+            action = "GET MESSAGE";
+            data = action + " " +  login + "\n";
+            sendCommand(sock, data);
+            receiveResponse(sock);
+        }
+
+        else if(choice == 3){
+            close(sock);
+            break;
         }
     }
 
-    cout << buf << endl;
     return 0;
 }
