@@ -51,8 +51,8 @@ void commandsClient(int client_socket){
             chat.sendMessage(sender, receiver, content);
             response = "Message sent\n";
         }
-        else if(command.rfind("GET ", 0) == 0) {
-            std::string username = command.substr(13);
+        else if(command.rfind("GET MESSAGE", 0) == 0) {
+            std::string username = command.substr(12);
             std::vector<Message> messages = chat.getMessages(username);
             for (const auto& msg : messages) {
                 response += msg.getSender() + ": " + msg.getContent() + "\n";
